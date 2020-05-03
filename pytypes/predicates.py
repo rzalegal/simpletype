@@ -53,8 +53,4 @@ def type_predicates(*types):
     return [TypePredicate(t) for t in types]
 
 
-Int, Float, String, Bool = type_predicates(int, float, str, bool)
-Number = Int | Float
-
-
 
