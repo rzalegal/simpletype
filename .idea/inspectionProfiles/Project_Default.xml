@@ -1,0 +1,20 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="telebot" />
+          <option value="balda_core" />
+          <option value="traceable.facttimes_2" />
+          <option value="traceable.countInArray_regular" />
+          <option value="traceable.countInArray_regularf" />
+          <option value="OOP.race" />
+          <option value="OOP.age" />
+          <option value="OOP.name" />
+          <option value="crypto.function" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
