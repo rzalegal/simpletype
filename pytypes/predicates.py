@@ -53,4 +53,3 @@ def type_predicates(*types):
     return [TypePredicate(t) for t in types]
 
 
-

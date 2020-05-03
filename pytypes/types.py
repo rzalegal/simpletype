@@ -1,4 +1,4 @@
-from pytypes.predicates import *
+from pytypes.constraints import *
 
 # Basic types
 
@@ -14,8 +14,12 @@ Char = String & Unit
 
 Nothing = Predicate(lambda x: x is None)
 
+Any = Predicate(lambda x: True)
+
+void = returns(Nothing)
 
 # Custom types
+
 
 def is_prime(n):
     for i in range(2, n // 2 + 1):
@@ -25,4 +29,9 @@ def is_prime(n):
 
 
 Prime = Int & Predicate(is_prime)
+
+
+
+
+
 
