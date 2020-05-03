@@ -39,7 +39,7 @@ class TypePredicate(Predicate):
         )
 
     def exception_text(self):
-        return "Type mismatch: " + self.name_reference()
+        return "Type mismatch" + self.name_reference()
 
 
 def is_prime(n):
