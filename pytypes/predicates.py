@@ -79,5 +79,3 @@ def primitive_type_list(*types):
 
 def collection_type_list(*types):
     return [CollectionTypePredicate(t) for t in types]
-
-

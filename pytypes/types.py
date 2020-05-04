@@ -43,3 +43,12 @@ List, Dict, Set, Tuple = collection_type_list(list, dict, set, tuple)
 Collection = List | Set | Tuple
 
 Singleton = Collection & Len(1)
+
+# Function types
+
+Function = TypePredicate(type(lambda x: x))
+
+#
+# @takes(List[Int], Function)
+# def map_arr(arr, f):
+#     return [f(i) for i in arr]
