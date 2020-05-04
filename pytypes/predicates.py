@@ -18,6 +18,13 @@ class Predicate:
                     arg
                 ))
 
+    def for_all(self, args):
+        if not self.p(args):
+            raise TypeError("{} for value '{}'".format(
+                self.exception_text(),
+                args
+            ))
+
     def name_reference(self):
         return "expected {}".format(self.name) if self.name else ""
 
@@ -25,7 +32,7 @@ class Predicate:
         return "predicate condition mismatch"
 
     def with_name(self, name):
-        return Predicate(
+        return TypePredicate(
             self.p,
             name
         )
@@ -33,23 +40,44 @@ class Predicate:
 
 class TypePredicate(Predicate):
 
-    def __init__(self, t):
+    def __init__(self, t, name=""):
         super().__init__(
-            lambda x: type(x) is t
+            lambda x: type(x) is t,
+            name
         )
+        self.t = t
 
     def exception_text(self):
         return "Type mismatch" + self.name_reference()
 
 
-def is_prime(n):
-    for i in range(2, n // 2 + 1):
-        if n % i == 0:
-            return False
-    return True and n != 1
+class CollectionTypePredicate(TypePredicate):
+
+    def __init__(self, col_t, elem_type_predicate=lambda x: True):
+        super().__init__(
+            col_t
+        )
+        self.elem_type_predicate = elem_type_predicate
+
+    def __call__(self, *cols):
+
+        for col in cols:
+            self.for_all(col)
+            for el in col:
+                self.elem_type_predicate(el)
+
+    def __getitem__(self, elem_type_predicate):
+        return CollectionTypePredicate(
+            self.t,
+            elem_type_predicate
+        )
 
 
-def type_predicates(*types):
+def primitive_type_list(*types):
     return [TypePredicate(t) for t in types]
+
+
+def collection_type_list(*types):
+    return [CollectionTypePredicate(t) for t in types]
 
 
