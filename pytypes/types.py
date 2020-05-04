@@ -6,6 +6,10 @@ Int, Float, String, Bool = primitive_type_list(int, float, str, bool)
 
 Number = Int | Float
 
+Even = Int & Predicate(lambda x: x % 2 == 0)
+
+Odd = Even.inverted()
+
 Len = lambda n: Predicate(lambda x: len(x) == n)
 
 LenMax = lambda n: Predicate(lambda x: len(x) <= n)
@@ -48,7 +52,6 @@ Singleton = Collection & Len(1)
 
 Function = TypePredicate(type(lambda x: x))
 
-#
-# @takes(List[Int], Function)
-# def map_arr(arr, f):
-#     return [f(i) for i in arr]
+
+
+

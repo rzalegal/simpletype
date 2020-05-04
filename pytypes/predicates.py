@@ -18,6 +18,9 @@ class Predicate:
                     arg
                 ))
 
+    def inverted(self):
+        return Predicate(lambda x: not self.p(x), self.name)
+
     def for_all(self, args):
         if not self.p(args):
             raise TypeError("{} for value '{}'".format(
