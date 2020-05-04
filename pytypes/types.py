@@ -10,7 +10,7 @@ Len = lambda n: Predicate(lambda x: len(x) == n)
 
 LenMax = lambda n: Predicate(lambda x: len(x) <= n)
 
-LenMin = lambda n: Predicate(lambda x: len(x) >= 0)
+LenMin = lambda n: Predicate(lambda x: len(x) >= n)
 
 LenBound = lambda a, b: LenMin(a) & LenMax(b)
 
