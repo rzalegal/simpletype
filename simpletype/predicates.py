@@ -86,23 +86,23 @@ class CollectionTypePredicate(TypePredicate):
         )
 
 
-class PredicateSequence:
-
-    def __init__(self, seq):
-        self.seq = seq
-
-    def __call__(self, args):
-
-        for i in range(len(args)):
-            try:
-
-                if self.seq[i].__class__.__subclasscheck__(PredicateIterator):
-                    self.seq[i].predicate.for_each(args[i:])
-                    return
-
-                self.seq[i](args[i])
-            except TypeError:
-                raise TypeError(i)
+# class PredicateSequence:
+#
+#     def __init__(self, seq):
+#         self.seq = seq
+#
+#     def __call__(self, args):
+#
+#         for i in range(len(args)):
+#             try:
+#
+#                 if self.seq[i].__class__.__subclasscheck__(PredicateIterator):
+#                     self.seq[i].predicate.for_each(args[i:])
+#                     return
+#
+#                 self.seq[i](args[i])
+#             except TypeError:
+#                 raise TypeError(i)
 
 
 class PredicateIterator:

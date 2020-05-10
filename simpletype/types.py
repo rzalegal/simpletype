@@ -53,8 +53,8 @@ Singleton = Collection & Len(1)
 Function = TypePredicate(type(lambda x: x))
 
 
-@takes(Int, *String)
+@takes(Function, *String)
 def sum(*args):
     print(args)
 
-sum(1, 's', 'f', 3)
+sum(1, 'sdf', 'sdf', 'sdf', 'sdf')

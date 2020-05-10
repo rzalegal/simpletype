@@ -5,11 +5,25 @@ def takes(*predicates):
     def wrapper(func):
         def wrap(*args):
             try:
-                PredicateSequence(predicates)(args)
+                exceptional_arg_index = 0
+
+                for i in range(len(args)):
+
+                    if predicates[i].__class__.__subclasscheck__(PredicateIterator):
+
+                        for j in range(i, len(args)):
+                            exceptional_arg_index = j
+                            predicates[i].predicate(args[j])
+
+                        return func(*args)
+
+                    exceptional_arg_index = i
+                    predicates[i](args[i])
+
             except TypeError as e:
-                raise TypeError(arg_type_exception(
-                    func, e.args[0]
-                ))
+                raise arg_type_exception(
+                    func, exceptional_arg_index
+                )
 
             return func(*args)
 
@@ -34,4 +48,3 @@ def returns(predicate):
         return wrap
 
     return wrapper
-
