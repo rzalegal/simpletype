@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/pytypesorigin.iml" filepath="$PROJECT_DIR$/.idea/pytypesorigin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/simpletype.iml" filepath="$PROJECT_DIR$/.idea/simpletype.iml" />
     </modules>
   </component>
 </project>

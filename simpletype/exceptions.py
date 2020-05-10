@@ -1,14 +1,16 @@
-def arg_type_exception(func, index=0, base_text=""):
-    return TypeError("{}. (Function '{}', arg_{})".format(
-        str(base_text),
+class SequenceLengthError(Exception):
+    pass
+
+
+def arg_type_exception(func, index=0):
+    return TypeError("Argument type mismatch: function '{}', arg_{}".format(
         func.__name__,
         index + 1
     ))
 
 
-def return_type_exception(func, base_text=""):
-    return TypeError("{} (Function '{}' return value)".format(
-        str(base_text),
+def return_type_exception(func):
+    return TypeError("Return value type mismatch: function '{}'".format(
         func.__name__
     ))
 

@@ -1,3 +1,6 @@
+from simpletype.exceptions import *
+
+
 class Predicate:
 
     def __init__(self, p, name=""):
@@ -10,13 +13,13 @@ class Predicate:
     def __or__(self, other):
         return Predicate(lambda x: self.p(x) or other.p(x))
 
-    def __call__(self, *args):
-        for arg in args:
-            if not self.p(arg):
-                raise TypeError("{} for value '{}'".format(
-                    self.exception_text(),
-                    arg
-                ))
+    def __call__(self, arg):
+        if not self.p(arg):
+            raise TypeError("{} for value '{}'".format(
+                self.exception_text(),
+                arg
+            ))
+        return arg
 
     def inverted(self):
         return Predicate(lambda x: not self.p(x), self.name)
@@ -27,6 +30,13 @@ class Predicate:
                 self.exception_text(),
                 args
             ))
+
+    def for_each(self, args):
+        for arg in args:
+            self.__call__(arg)
+
+    def __iter__(self):
+        return [PredicateIterator(self)].__iter__()
 
     def name_reference(self):
         return "expected {}".format(self.name) if self.name else ""
@@ -74,6 +84,31 @@ class CollectionTypePredicate(TypePredicate):
             self.t,
             elem_type_predicate
         )
+
+
+class PredicateSequence:
+
+    def __init__(self, seq):
+        self.seq = seq
+
+    def __call__(self, args):
+
+        for i in range(len(args)):
+            try:
+
+                if self.seq[i].__class__.__subclasscheck__(PredicateIterator):
+                    self.seq[i].predicate.for_each(args[i:])
+                    return
+
+                self.seq[i](args[i])
+            except TypeError:
+                raise TypeError(i)
+
+
+class PredicateIterator:
+
+    def __init__(self, predicate):
+        self.predicate = predicate
 
 
 def primitive_type_list(*types):
