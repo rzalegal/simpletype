@@ -30,6 +30,7 @@ Any = Predicate(lambda x: True)
 
 void = returns(Nothing)
 
+
 # Custom types
 
 
@@ -42,9 +43,11 @@ def is_prime(n):
 
 # Collection types
 
-List, Dict, Set, Tuple = collection_type_list(list, dict, set, tuple)
+List, Set = collection_type_list(list, set)
 
-Collection = List | Set | Tuple
+Collection = List | Set
+
+Tuple = TupleTypePredicate()
 
 Singleton = Collection & Len(1)
 
@@ -52,9 +55,4 @@ Singleton = Collection & Len(1)
 
 Function = TypePredicate(type(lambda x: x))
 
-
-@takes(Function, *String)
-def sum(*args):
-    print(args)
-
-sum(1, 'sdf', 'sdf', 'sdf', 'sdf')
+Tuple[Int, Float, String]((1, 2.0, 's'))
