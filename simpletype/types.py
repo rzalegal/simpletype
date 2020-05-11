@@ -55,4 +55,4 @@ Singleton = Collection & Len(1)
 
 Function = TypePredicate(type(lambda x: x))
 
-Tuple[Int, Float, String]((1, 2.0, 's'))
+a = Char('dsf')
