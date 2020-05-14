@@ -52,3 +52,5 @@ Singleton = Collection & Len(1)
 # Function types
 
 Function = TypePredicate(type(lambda x: x))
+
+Tuple = TupleTypePredicate()

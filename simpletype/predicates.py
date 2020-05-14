@@ -50,8 +50,8 @@ class CollectionTypePredicate(TypePredicate):
 
     def __call__(self, col):
         super().__call__(col)
-        for el in col:
-            self.elem_type_predicates[0](el)
+        for el, predicate in zip(col, self.elem_type_predicates):
+            predicate(el)
 
     def __getitem__(self, elem_type_predicate):
         return CollectionTypePredicate(
@@ -69,21 +69,9 @@ class TupleTypePredicate(CollectionTypePredicate):
         )
 
     def __getitem__(self, *elem_type_predicates):
-        print(elem_type_predicates)
         return TupleTypePredicate(
-            *elem_type_predicates
+            *elem_type_predicates[0]
         )
-
-    def __call__(self, col):
-        print("len col=" + str(len(col)))
-        print("len pred=" + str(len(self.elem_type_predicates)))
-        col_length = len(col)
-        Predicate(lambda x: col_length == len(self.elem_type_predicates))(col)
-        super().__call__(col)
-
-        if col_length > 1:
-            for i in range(len(col)):
-                self.elem_type_predicates[i](col[i])
 
 
 class PredicateIterator:
