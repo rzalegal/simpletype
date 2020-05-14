@@ -154,3 +154,22 @@ def print_numbers(*nums):
     print(nums)
 ```
 
+### Type system
+ 
+As it was already mentioned before, types are **predicate-based** in _simpletype_. This means you can combine library
+types or introduce your own conditionals just passing a predicate-function 
+(function that returns boolean value) to Predicate class instance.
+
+Predicate class also has a helper-method _"inverted"_ to apply logical _NOT_ on basic predicate function, which may be
+useful sometimes.
+
+```python
+# Defining negative integer type
+NegativeInt = Int & Predicate(lambda x: x < 0)
+
+# Defining naturals type
+Natual = NegativeInt.inverted()
+
+```
+
+
