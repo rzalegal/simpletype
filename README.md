@@ -1,4 +1,5 @@
-# Simpletype
+![alt text](blob/simple_type_image.png?raw=true)
+# Simpletype        
 
 ## One more type checker?
 
