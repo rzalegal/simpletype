@@ -54,4 +54,3 @@ def build_reversed_int(*args):
     return s[::-1]
 
 
-build_reversed_int(1, 2, 's')

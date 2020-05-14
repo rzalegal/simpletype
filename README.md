@@ -172,10 +172,8 @@ having only _runtime_ ones.
 When typed function is being called and some parameter or (and) return value does not match the types declared,
 a TypeError-base exception will be raised.
 
-Depending on what exactly went wrong, this is to be either ArgumentTypeError, ReturnValueError or ValueTypeError, carrying some
-information about typed function (method) and wrong type argument or value.
-
-
+Depending on what exactly went wrong, this is to be either _ArgumentTypeError_ or _ReturnValueError_ or _ValueTypeError_, carrying some
+information about typed function (method) and wrong type argument or value:
 
 #### ArgumentTypeError
 + Invoked function (method) name
@@ -221,7 +219,7 @@ useful sometimes.
 NegativeInt = Int & Predicate(lambda x: x < 0)
 
 # Defining naturals type
-Natual = NegativeInt.inverted()
+Natural = NegativeInt.inverted()
 
 # Defining prime number type
 def is_prime(n):
