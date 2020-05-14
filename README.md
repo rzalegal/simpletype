@@ -83,7 +83,7 @@ Just run standard pip command to install **simpletype** module:
 
 ## General use
 
-### Two decorators
+### Decorating functions
 
 As you may have already seen, checking the types requires using just one 
 of two decorators 
@@ -154,7 +154,39 @@ def print_numbers(*nums):
     print(nums)
 ```
 
-### Type system
+### Variable type checking
+
+Library allows to check not only the function parameters and return value, but variable type while declaration.
+
+```python
+a = Int(5) # a = 5
+b = List[Number]([1, 2, 3.0]) # b = [1, 2, 3.0]
+c = String(4.0) # an exception will be raised
+``` 
+
+### What exceptions are actually raised
+
+Because of Python not being a compiled programming language we don`t have _compile time errors_, 
+having only _runtime_ ones.
+
+When typed function is being called and some parameter or (and) return value does not match the types declared,
+a TypeError-base exception will be raised.
+
+Depending on what exactly went wrong, this is to be either ArgumentTypeError, ReturnValueError or ValueTypeError, carrying some
+information about typed function (method) and wrong type argument or value.
+
+
+
+#### ArgumentTypeError
++ Invoked function (method) name
++ Argument index
++ Argument value
+
+
+
+
+
+## Type system
  
 As it was already mentioned before, types are **predicate-based** in _simpletype_. This means you can combine library
 types or introduce your own conditionals just passing a predicate-function 
@@ -170,6 +202,18 @@ NegativeInt = Int & Predicate(lambda x: x < 0)
 # Defining naturals type
 Natual = NegativeInt.inverted()
 
+# Defining prime number type
+def is_prime(n):
+    for i in range(2, n // 2 + 1):
+        if n % i == 0:
+            return False
+    return True and n != 1
+
+Prime = Int & Predicate(is_prime) 
+
 ```
+Collection types support element typing of any depth level.
+
+
 
 

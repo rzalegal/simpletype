@@ -21,7 +21,7 @@ def takes(*predicates):
                     predicates[i](args[i])
 
             except TypeError as e:
-                raise arg_type_exception(
+                raise ArgumentTypeError(
                     func, exceptional_arg_index
                 )
 

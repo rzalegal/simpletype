@@ -31,16 +31,6 @@ Any = Predicate(lambda x: True)
 void = returns(Nothing)
 
 
-# Custom types
-
-
-def is_prime(n):
-    for i in range(2, n // 2 + 1):
-        if n % i == 0:
-            return False
-    return True and n != 1
-
-
 # Collection types
 
 List, Set = collection_type_list(list, set)
@@ -54,3 +44,12 @@ Singleton = Collection & Len(1)
 Function = TypePredicate(type(lambda x: x))
 
 Tuple = TupleTypePredicate()
+
+@takes(*Number)
+def sum_all(*args):
+    s = 0
+    for i in args:
+        s += i
+    return s
+
+sum_all(1, 2, 3, 's')

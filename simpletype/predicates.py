@@ -23,21 +23,14 @@ class Predicate:
     def __iter__(self):
         return [PredicateIterator(self)].__iter__()
 
-    def with_type_name(self, name):
-        return TypePredicate(
-            self.p,
-            name
-        )
-
 
 class TypePredicate(Predicate):
 
-    def __init__(self, base_type, name=""):
+    def __init__(self, base_type):
         super().__init__(
             lambda x: type(x) is base_type
         )
         self.t = base_type
-        self.name = name
 
 
 class CollectionTypePredicate(TypePredicate):
