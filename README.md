@@ -283,7 +283,7 @@ Prime = Int & Predicate(is_prime)
 1) **List**, **List[T]** — a list in common sense & list of elements with type T: ```[1, 2, 's']```
 2) **Tuple**, **Tuple[T1, T2, ..., Tn]** — a tuple in common sense & tuple with typed values: ```(10, 20, 'ff')```
 3) **Set**, **Set[T]** — a set in common sense & set of elements with type T: ```{1, 2, 's'}```
-4) **Collection**, **Collection[T]** — list, tuple or set in common sense or typed
+4) **Collection**, **Collection[T]** — list, tuple or set in common sense or typed collection
 
 Collection types support their elements predicative-typing on any depth level:
 
