@@ -1,5 +1,5 @@
-![alt text](blob/simple_type_image.png?raw=true)****
-# Simpletype        
+![alt text](blob/simple_type_image.png?raw=true)
+# Introduction        
 
 ## One more type checker?
 
@@ -77,13 +77,13 @@ def wrap_coordinates(coord_lst):
 
 ```
 
-## Install
+# Install
 Just run standard pip command to install **simpletype** module:
 `pip install simpletype`
 
-## General use
+# General use
 
-### Decorating functions
+## Decorating functions
 
 As you may have already seen, checking the types requires using just one 
 of two decorators 
@@ -151,7 +151,7 @@ def print_numbers(*nums):
     print(nums)
 ```
 
-### Variable type checking
+## Variable type checking
 
 Library allows to check not only the function parameters and return value, but variable type.
 
@@ -163,7 +163,7 @@ b = List[Number]([1, 2, 3.0]) # b = [1, 2, 3.0]
 c = String(4.0) # an exception will be raised
 ``` 
 
-### What exceptions are actually raised
+## What exceptions are actually raised
 
 Because of Python not being a compiled programming language we don`t have _compile time errors_, 
 having only _runtime_ ones.
@@ -174,7 +174,7 @@ a TypeError-base exception will be raised.
 Depending on what exactly went wrong, this is to be either _ArgumentTypeError_ or _ReturnTypeError_ or _ValueTypeError_, carrying some
 information about typed function (method) and wrong type argument or value:
 
-#### ArgumentTypeError
+### ArgumentTypeError
 + Invoked function (method) name
 + Argument index
 + Argument value
@@ -203,7 +203,7 @@ However, being marked as type-safe function that takes only numbers it would rai
     simpletype.exceptions.ArgumentTypeError: function 'build_reversed_int', arg_3: value='s', base_type=<class 'str'>
 
 
-#### ReturnTypeError
+### ReturnTypeError
 + Invoked function (method) name
 + Argument value
 + Argument base type
@@ -224,7 +224,7 @@ def divide(a, b):
 Both of these functions will cause a ReturnTypeError, although the first one is to show up the function was built
 incorrectly, but the second helps to find an incorrectly predicted return type.  
 
-#### ValueTypeError
+### ValueTypeError
 + Value
 + Value base type
 
@@ -237,7 +237,7 @@ a = Float(1)
 ```
     simpletype.exceptions.ValueTypeError: Predicate mismatch for value='1', base_type=<class 'int'>
 
-## Type system
+# Type system
 
 ### Primitive types
 
@@ -307,3 +307,10 @@ longest_int_sublist([[1, 2, 3], [], [1, '3']]) # ArgumentTypeError
 ```
 
 This typed function accepts only a list of lists of integers or floats, and returns a list or None.
+
+### Collection utility types
+
+1) **Len(n)** — collection or string of length equal to some _n_
+2) LenMin(n), LenMax(n) — lower- and higher-bounded length collection, respectively
+3) LenBounded(a, b) — collection with both lower and higher length bounds
+4) Singleton, Singleton[T] — single-element-collection and its typed version
