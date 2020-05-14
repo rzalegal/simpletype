@@ -45,11 +45,13 @@ Function = TypePredicate(type(lambda x: x))
 
 Tuple = TupleTypePredicate()
 
-@takes(*Number)
-def sum_all(*args):
-    s = 0
-    for i in args:
-        s += i
-    return s
 
-sum_all(1, 2, 3, 's')
+@takes(*Number)
+def build_reversed_int(*args):
+    s = ''
+    for i in args:
+        s += str(i)
+    return s[::-1]
+
+
+build_reversed_int(1, 2, 's')

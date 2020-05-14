@@ -181,8 +181,29 @@ information about typed function (method) and wrong type argument or value.
 + Invoked function (method) name
 + Argument index
 + Argument value
++ Argument base type
 
+Let's see an example code snippet:
 
+```python
+@takes(*Number)
+def build_reversed_int(*args):
+    s = ''
+    for i in args:
+        s += str(i)
+    return s[::-1]
+
+build_reversed_int(1, 2, 3) # result: 321
+build_reversed_int(1, 2, 's') # ArgumentTypeException
+```
+
+Normally, an accident string argument passing wouldn't have much effect on code execution — explicit casting to string 
+works properly both on integers and strings — so the fact of returning an absolutely incorrect result would 
+remain unnoticed.
+
+However, being marked as type-safe function that takes only numbers it would raise error immediately:
+
+    simpletype.exceptions.ArgumentTypeError: function 'build_reversed_int', arg_3: value='s', base_type=<class 'str'>
 
 
 

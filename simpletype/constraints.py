@@ -20,9 +20,11 @@ def takes(*predicates):
                     exceptional_arg_index = i
                     predicates[i](args[i])
 
-            except TypeError as e:
+            except ValueTypeError as e:
                 raise ArgumentTypeError(
-                    func, exceptional_arg_index
+                    func,
+                    exceptional_arg_index,
+                    e.value
                 )
 
             return func(*args)
