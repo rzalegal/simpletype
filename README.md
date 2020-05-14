@@ -277,6 +277,11 @@ def is_prime(n):
 Prime = Int & Predicate(is_prime) 
 
 ```
+
+### Collection types
+
+1) **List**, **List[T]** — list in common sense & parametrized list ```[1, 2, 3]```
+
 Collection types support their elements predicative-typing on any depth level:
 
 ```python

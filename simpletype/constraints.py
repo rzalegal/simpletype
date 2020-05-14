@@ -40,10 +40,11 @@ def returns(predicate):
             try:
                 ret_val = func(*args)
                 predicate(ret_val)
-            except TypeError as e:
-                raise TypeError(return_type_exception(
-                    func
-                ))
+            except ReturnTypeError as e:
+                raise ReturnTypeError(
+                    func,
+                    e.value
+                )
 
             return ret_val
 

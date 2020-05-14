@@ -18,7 +18,7 @@ class Predicate:
         return arg
 
     def inverted(self):
-        return Predicate(lambda x: not self.p(x))
+        return self.__class__(lambda x: not self.p(x))
 
     def __iter__(self):
         return [PredicateIterator(self)].__iter__()
@@ -45,6 +45,7 @@ class CollectionTypePredicate(TypePredicate):
         super().__call__(col)
         for el, predicate in zip(col, self.elem_type_predicates):
             predicate(el)
+        return col
 
     def __getitem__(self, elem_type_predicate):
         return CollectionTypePredicate(

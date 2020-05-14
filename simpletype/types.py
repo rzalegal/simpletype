@@ -35,7 +35,9 @@ void = returns(Nothing)
 
 List, Set = collection_type_list(list, set)
 
-Collection = List | Set
+Tuple = TupleTypePredicate()
+
+Collection = List | Set | Tuple
 
 Singleton = Collection & Len(1)
 
@@ -43,15 +45,4 @@ Singleton = Collection & Len(1)
 
 Function = TypePredicate(type(lambda x: x))
 
-Tuple = TupleTypePredicate()
 
-
-@takes(*Number)
-def build_reversed_int(*args):
-    s = ''
-    for i in args:
-        s += str(i)
-    return s[::-1]
-
-
-a = Float(1)
