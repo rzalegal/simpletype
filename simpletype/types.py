@@ -47,12 +47,8 @@ List, Set = collection_type_list(list, set)
 
 Collection = List | Set
 
-Tuple = TupleTypePredicate()
-
 Singleton = Collection & Len(1)
 
 # Function types
 
 Function = TypePredicate(type(lambda x: x))
-
-a = Char('dsf')

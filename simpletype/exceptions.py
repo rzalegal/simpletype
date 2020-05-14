@@ -26,7 +26,9 @@ def collection_elem_type_exception(func, index=0, base_text=""):
 class ValueTypeError(TypeError):
 
     def __init__(self, value):
-        super().__init__("For value " + value)
+        super().__init__("For value={}".format(
+            value
+        ))
 
 
 class ArgumentTypeError(TypeError):
