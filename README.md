@@ -162,7 +162,7 @@ b = List[Number]([1, 2, 3.0]) # b = [1, 2, 3.0]
 c = String(4.0) # an exception will be raised
 ``` 
 
-### Exceptions actually raised
+### What exceptions are actually raised
 
 Because of Python not being a compiled programming language we don`t have _compile time errors_, 
 having only _runtime_ ones.
