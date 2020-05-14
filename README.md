@@ -1,4 +1,4 @@
-# v0.1-alpha
+# Simpletype v0.1-alpha
 
 ## One more type checker?
 
@@ -75,7 +75,6 @@ def wrap_coordinates(coord_lst):
     ...
 
 ```
-More functionality will be 
 
 ## Install
 Just run standard pip command to install **simpletype** module:
@@ -252,7 +251,7 @@ a = Float(1)
 9) **Char** — a unit-length string value: ```'a', 'b', 'c', ... 'z'```
 10) **Digit** — a unit-length integer value: ```0, 1, 2, 3, ... 9``` 
 11) **Any** — represents a value of any type
-12) **Nothing** — represents a None value
+12) **Nothing** — represents python builtin _None_ value
  
 As it was already mentioned before, types are **predicate-based** in _simpletype_. This means you can combine library
 types or introduce your own conditionals just passing a predicate-function 
