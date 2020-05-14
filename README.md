@@ -280,7 +280,10 @@ Prime = Int & Predicate(is_prime)
 
 ### Collection types
 
-1) **List**, **List[T]** — list in common sense & parametrized list ```[1, 2, 3]```
+1) **List**, **List[T]** — a list in common sense & list of elements with type T: ```[1, 2, 's']```
+2) **Tuple**, **Tuple[T1, T2, ..., Tn]** — a tuple in common sense & tuple with typed values: ```(10, 20, 'ff')```
+3) **Set**, **Set[T]** — a set in common sense & set of elements with type T: ```{1, 2, 's'}```
+4) **Collection**, **Collection[T]** — list, tuple or set in common sense or typed
 
 Collection types support their elements predicative-typing on any depth level:
 
@@ -302,6 +305,4 @@ longest_int_sublist([[1, 2.0, 3], [], [1, 3]]) # result: [1, 2.0, 3]
 longest_int_sublist([[1, 2, 3], [], [1, '3']]) # ArgumentTypeError
 ```
 
-
-
-
+This typed function accepts only a list of lists of integers or floats, and returns a list or None.
