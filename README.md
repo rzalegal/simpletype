@@ -97,7 +97,6 @@ Any of built-in types can be passed into the **takes** annotation in any
 quantity, any depth of nesting with vararg support:
 ```python
 @takes(Function, *Int)
-# @returns(List) — return value check is optional — as you wish 
 def map_all_ints(f, *args):
     return [f(i) for i in args]
 ```
@@ -108,8 +107,7 @@ For example, we have to implement **join** function to concatenate vararg input 
 integers with separator defined as first string argument. You can define something like `StringInt` as your own type, 
 but the better one is to use predicative manner:
 ```python
-@takes(String, *(Int | String))
-# returns(String) 
+@takes(String, *(Int | String)) 
 def join(*args):
     return args[0].join(str(i) for i in args)
 ```
@@ -118,7 +116,6 @@ That will work fine on args despite the separator wasn't explicitly included int
 Same principle works good for params list version:
 ```python
 @takes(String, List[Int | String])
-# returns(String)
 def join(sep, list_to_join):
     return sep.join(str(i) for i in list_to_join)
 ```
@@ -156,15 +153,17 @@ def print_numbers(*nums):
 
 ### Variable type checking
 
-Library allows to check not only the function parameters and return value, but variable type while declaration.
+Library allows to check not only the function parameters and return value, but variable type.
 
 ```python
 a = Int(5) # a = 5
+
 b = List[Number]([1, 2, 3.0]) # b = [1, 2, 3.0]
+
 c = String(4.0) # an exception will be raised
 ``` 
 
-### What exceptions are actually raised
+### Exceptions actually raised
 
 Because of Python not being a compiled programming language we don`t have _compile time errors_, 
 having only _runtime_ ones.
@@ -172,7 +171,7 @@ having only _runtime_ ones.
 When typed function is being called and some parameter or (and) return value does not match the types declared,
 a TypeError-base exception will be raised.
 
-Depending on what exactly went wrong, this is to be either _ArgumentTypeError_ or _ReturnValueError_ or _ValueTypeError_, carrying some
+Depending on what exactly went wrong, this is to be either _ArgumentTypeError_ or _ReturnTypeError_ or _ValueTypeError_, carrying some
 information about typed function (method) and wrong type argument or value:
 
 #### ArgumentTypeError
@@ -181,7 +180,7 @@ information about typed function (method) and wrong type argument or value:
 + Argument value
 + Argument base type
 
-Let's see an example code snippet:
+Exception is raised on function argument type mismatch:
 
 ```python
 @takes(*Number)
@@ -204,8 +203,56 @@ However, being marked as type-safe function that takes only numbers it would rai
     simpletype.exceptions.ArgumentTypeError: function 'build_reversed_int', arg_3: value='s', base_type=<class 'str'>
 
 
+#### ReturnTypeError
++ Invoked function (method) name
++ Argument value
++ Argument base type
+
+Exception is raised on function return value type mismatch:
+
+```python
+
+@returns(Set[String])
+def str_collection(*args):
+    return [str(i) for i in args]
+
+@returns(Int)
+def divide(a, b):
+    return a / b 
+```
+
+Both of these functions will cause a ReturnTypeError, although the first one is to show up the function was built
+incorrectly, but the second helps to find an incorrectly predicted return type.  
+
+#### ValueTypeError
++ Value
++ Value base type
+
+Basic exception type is raised on value type mismatch and is a cause for other two exceptions. 
+
+It is raised alone only when variable is declared:
+
+```python
+a = Float(1)
+```
+    simpletype.exceptions.ValueTypeError: Predicate mismatch for value='1', base_type=<class 'int'>
 
 ## Type system
+
+### Primitive types
+
+1) **Int** — integer value in common sense: ```1, 20, 300```
+2) **Float** — float value in common sense: ```3.0, 4.2, 5.9```
+3) **String** — string value in common sense: ```'hello', 'world'```
+4) **Bool** — boolean value in common sense: ```true, false```
+5) **Number** — either an integer or float value: ```4, 1.0```
+6) **Even** — an even integer value: ```2, -4, 6```
+7) **Odd** — an odd integer value: ```3, 9, -17```
+8) **Unit** — a unit-length value: ```3, 's', 'B', 1```
+9) **Char** — a unit-length string value: ```'a', 'b', 'c', ... 'z'```
+10) **Digit** — a unit-length integer value: ```0, 1, 2, 3, ... 9``` 
+11) **Any** — represents a value of any type
+12) **Nothing** — represents a None value
  
 As it was already mentioned before, types are **predicate-based** in _simpletype_. This means you can combine library
 types or introduce your own conditionals just passing a predicate-function 
@@ -231,7 +278,25 @@ def is_prime(n):
 Prime = Int & Predicate(is_prime) 
 
 ```
-Collection types support element typing of any depth level.
+Collection types support their elements predicative-typing on any depth level:
+
+```python
+
+@takes(List[List[Int | Float]])
+@returns(List | Nothing)
+def longest_int_sublist(lst):
+    max_len = -1
+    sublist = None
+    for l in lst:
+        length = len(l)
+        if length > max_len:
+            max_len = length
+            sublist = l
+    return sublist 
+
+longest_int_sublist([[1, 2.0, 3], [], [1, 3]]) # result: [1, 2.0, 3]
+longest_int_sublist([[1, 2, 3], [], [1, '3']]) # ArgumentTypeError
+```
 
 
 

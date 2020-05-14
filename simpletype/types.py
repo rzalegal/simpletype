@@ -54,3 +54,4 @@ def build_reversed_int(*args):
     return s[::-1]
 
 
+a = Float(1)
