@@ -1,4 +1,4 @@
-# Simpletype v0.1-alpha
+# Simpletype
 
 ## One more type checker?
 
