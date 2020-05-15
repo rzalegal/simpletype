@@ -50,11 +50,10 @@ class CollectionTypePredicate(TypePredicate):
         try:
             for el, predicate in zip(col, self.elem_type_predicates):
                 predicate(el)
-        except __ValueTypeError as e:
+        except ValueTypeError as e:
             raise ElementTypeError(
                 e.value,
                 col,
-
             )
 
     def check_col_type(self, col):
@@ -62,8 +61,10 @@ class CollectionTypePredicate(TypePredicate):
 
     def check_col_len(self, col):
         required_len = len(self.elem_type_predicates)
-        if len(col) != required_len:
-            raise CollectionLengthError(col, required_len)
+        actual_len = len(col)
+
+        if actual_len != required_len:
+            raise CollectionLengthError(col, required_len, actual_len)
 
     def __getitem__(self, elem_type_predicate):
         return CollectionTypePredicate(
