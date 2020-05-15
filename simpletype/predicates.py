@@ -1,5 +1,6 @@
 from simpletype.exceptions import *
 
+
 class Predicate:
 
     def __init__(self, p):
@@ -13,7 +14,7 @@ class Predicate:
 
     def __call__(self, arg):
         if not self.p(arg):
-            raise ValueTypeError(arg)
+            raise ValuePredicateError(arg)
         return arg
 
     def inverted(self):
@@ -41,10 +42,28 @@ class CollectionTypePredicate(TypePredicate):
         self.elem_type_predicates = elem_type_predicates
 
     def __call__(self, col):
-        super().__call__(col)
-        for el, predicate in zip(col, self.elem_type_predicates):
-            predicate(el)
+        self.check_col_type(col)
+        self.check_col_elements_type(col)
         return col
+
+    def check_col_elements_type(self, col):
+        try:
+            for el, predicate in zip(col, self.elem_type_predicates):
+                predicate(el)
+        except __ValueTypeError as e:
+            raise ElementTypeError(
+                e.value,
+                col,
+
+            )
+
+    def check_col_type(self, col):
+        super().__call__(col)
+
+    def check_col_len(self, col):
+        required_len = len(self.elem_type_predicates)
+        if len(col) != required_len:
+            raise CollectionLengthError(col, required_len)
 
     def __getitem__(self, elem_type_predicate):
         return CollectionTypePredicate(
@@ -67,8 +86,10 @@ class TupleTypePredicate(CollectionTypePredicate):
         )
 
     def __call__(self, col):
-        if len(col) != len(self.elem_type_predicates):
-            raise TypeError("Collection length mismatch")
+        self.check_col_type(col)
+        self.check_col_len(col)
+        self.check_col_elements_type(col)
+        return col
 
 
 class PredicateIterator:

@@ -20,7 +20,7 @@ def takes(*predicates):
                     exceptional_arg_index = i
                     predicates[i](args[i])
 
-            except ValueTypeError as e:
+            except ValuePredicateError as e:
                 raise ArgumentTypeError(
                     func,
                     exceptional_arg_index,
