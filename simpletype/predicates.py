@@ -35,7 +35,7 @@ class TypePredicate(Predicate):
 
 class CollectionTypePredicate(TypePredicate):
 
-    def __init__(self, col_t, *elem_type_predicates):
+    def __init__(self, col_t, elem_type_predicates=()):
         super().__init__(
             col_t
         )
@@ -48,13 +48,17 @@ class CollectionTypePredicate(TypePredicate):
 
     def check_col_elements_type(self, col):
         try:
-            for el, predicate in zip(col, self.elem_type_predicates):
-                predicate(el)
+            self.element_check(col)
         except ValueTypeError as e:
             raise ElementTypeError(
                 e.value,
-                col,
+                col
             )
+
+    def element_check(self, col):
+        for predicate in self.elem_type_predicates:
+            for el in col:
+                predicate(el)
 
     def check_col_type(self, col):
         super().__call__(col)
@@ -69,21 +73,23 @@ class CollectionTypePredicate(TypePredicate):
     def __getitem__(self, elem_type_predicate):
         return CollectionTypePredicate(
             self.t,
-            elem_type_predicate
+            (elem_type_predicate,)
         )
 
 
 class TupleTypePredicate(CollectionTypePredicate):
 
-    def __init__(self, *elem_type_predicates):
+    def __init__(self, elem_type_predicates=()):
         super().__init__(
             tuple,
-            *elem_type_predicates
+            elem_type_predicates
         )
 
     def __getitem__(self, *elem_type_predicates):
         return TupleTypePredicate(
-            *elem_type_predicates[0]
+            elem_type_predicates[0]
+            if type(elem_type_predicates[0]) is tuple
+            else elem_type_predicates
         )
 
     def __call__(self, col):
@@ -91,6 +97,10 @@ class TupleTypePredicate(CollectionTypePredicate):
         self.check_col_len(col)
         self.check_col_elements_type(col)
         return col
+
+    def element_check(self, col):
+        for i in range(len(self.elem_type_predicates)):
+            self.elem_type_predicates[i](col[i])
 
 
 class PredicateIterator:

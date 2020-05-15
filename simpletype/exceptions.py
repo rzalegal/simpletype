@@ -1,6 +1,3 @@
-from types import TracebackType
-from typing import Optional
-
 from simpletype.utils import str_limit, type_name_ref
 
 
@@ -12,42 +9,37 @@ class ValueTypeError(TypeError):
         )
         self.value = value
 
-    def value_type_ref(self):
-        return type_name_ref(self.value)
-
 
 class ValuePredicateError(ValueTypeError):
 
     def __init__(self, value):
         super().__init__(
             value,
-            "'{}({})'".format(
-                self.value_type_ref(),
-                str_limit(self.value),
+            "{}<{}>".format(
+                str_limit(value),
+                type_name_ref(value),
             )
         )
 
 
 class ElementTypeError(ValueTypeError):
 
-    def __init__(self, value, col, col_type_predicate):
+    def __init__(self, value, col):
         super().__init__(
             value,
-            "col='{}{}{}', elem='{}{}'".format(
-                type_name_ref(self.col),
-                "[" + type_name_ref(self.col_type_predicate) + "]" if self.col_type_predicate else "",
-                self.col,
-                self.value_type_ref(),
-                self.value
+            "col: {}{}; elem: {} <{}>".format(
+                type_name_ref(col),
+                col,
+                value,
+                type_name_ref(value)
             )
         )
         self.col = col
-        self.col_type_predicate = col_type_predicate
 
 
 class IndexedElementTypeError(ElementTypeError):
 
-    def __init__(self, value, col, col_type_predicate, elem_index):
+    def __init__(self, value, col, predicates, elem_index):
         super().__init__(
             value,
             super().args[0] + " index=" + self.elem_index
@@ -61,10 +53,10 @@ class CollectionLengthError(ValueTypeError):
         super().__init__(
             col,
             "'{}{}': expected {} elements, got {} ".format(
-                self.value_type_ref(),
-                self.value,
-                self.expected_len,
-                self.actual_len
+                type_name_ref(col),
+                col,
+                expected_len,
+                actual_len
             )
         )
         self.expected_len = expected_len
