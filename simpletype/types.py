@@ -45,4 +45,4 @@ Singleton = Collection & Len(1)
 
 Function = TypePredicate(type(lambda x: x))
 
-
+Tuple[Int, Int, Int]((1,1,1, 1))

@@ -1,6 +1,5 @@
 from simpletype.exceptions import *
 
-
 class Predicate:
 
     def __init__(self, p):
@@ -66,6 +65,10 @@ class TupleTypePredicate(CollectionTypePredicate):
         return TupleTypePredicate(
             *elem_type_predicates[0]
         )
+
+    def __call__(self, col):
+        if len(col) != len(self.elem_type_predicates):
+            raise TypeError("Collection length mismatch")
 
 
 class PredicateIterator:

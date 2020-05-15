@@ -8,6 +8,16 @@ class ValueTypeError(TypeError):
         self.value = value
 
 
+class CollectionLengthError(ValueTypeError):
+
+    def __init__(self, col, expected_len):
+        super().__init__("Collection length mismatch — {} elements instead of {}".format(
+            len(col),
+            expected_len
+        ))
+        self.value = col
+
+
 class ReturnTypeError(ValueTypeError):
 
     def __init__(self, func, value):
