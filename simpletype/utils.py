@@ -7,3 +7,14 @@ def str_limit(s):
 
 def type_name_ref(val):
     return val.__class__.__name__
+
+
+def predicate_filtered_list(arr, predicate):
+    return filter(predicate, arr)
+
+
+def type_filtered_list(arr, t):
+    return predicate_filtered_list(
+        arr,
+        lambda x: type(x) is t,
+    )
