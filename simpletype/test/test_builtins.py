@@ -4,7 +4,6 @@ from simpletype.utils import type_filtered_list, predicate_filtered_list
 
 
 class TestPrimitiveBuiltins(TestCase):
-
     type_dict = {
         int: Int,
         float: Float,
@@ -18,21 +17,20 @@ class TestPrimitiveBuiltins(TestCase):
               True, False
               ]
 
-    def test_primitive_types(self):
+    def test_primitives(self):
         for primitive, predicate in TestPrimitiveBuiltins.type_dict.items():
             for elem in type_filtered_list(TestPrimitiveBuiltins.values, primitive):
                 predicate(elem)
 
 
 class TestCollectionBuiltins(TestCase):
-
     type_dict = {
         list: List,
         tuple: Tuple,
         set: Set
     }
 
-    def test_collection_types(self):
+    def test_collections(self):
         for col_t, predicate in TestCollectionBuiltins.type_dict.items():
             predicate(
                 col_t(TestPrimitiveBuiltins.values)

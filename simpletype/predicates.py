@@ -67,7 +67,7 @@ class CollectionTypePredicate(TypePredicate):
         required_len = len(self.elem_type_predicates)
         actual_len = len(col)
 
-        if actual_len != required_len:
+        if 0 < required_len != actual_len:
             raise CollectionLengthError(col, required_len, actual_len)
 
     def __getitem__(self, elem_type_predicate):
