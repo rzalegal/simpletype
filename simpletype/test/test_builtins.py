@@ -35,3 +35,13 @@ class TestCollectionBuiltins(TestCase):
             predicate(
                 col_t(TestPrimitiveBuiltins.values)
             )
+
+    def test_typed_iterables(self):
+        for primitive, predicate in TestPrimitiveBuiltins.type_dict.items():
+            for col_type in (list, set):
+                TestCollectionBuiltins.type_dict[col_type][predicate](col_type(
+                    type_filtered_list(
+                        TestPrimitiveBuiltins.values,
+                        primitive
+                    )
+                ))
