@@ -103,6 +103,34 @@ class TupleTypePredicate(CollectionTypePredicate):
             self.elem_type_predicates[i](col[i])
 
 
+class DictTypePredicate(CollectionTypePredicate):
+
+    def __init__(self, kv_type_predicates=()):
+        super().__init__(
+            dict,
+            kv_type_predicates
+        )
+
+    def __call__(self, col):
+        return super().__call__(col)
+
+    def element_check(self, col):
+        if self.elem_type_predicates:
+            for k, v in col.items():
+                self.elem_type_predicates[0](k)
+                self.elem_type_predicates[1](v)
+
+    def __getitem__(self, *predicates):
+        if len(predicates[0]) != 2:
+            raise KeyValueCollectionTypingError()
+        return DictTypePredicate(
+            predicates[0]
+        )
+
+
+
+
+
 class PredicateIterator:
 
     def __init__(self, predicate):

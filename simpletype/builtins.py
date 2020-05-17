@@ -37,6 +37,8 @@ List, Set = collection_type_list(list, set)
 
 Tuple = TupleTypePredicate()
 
+Dict = DictTypePredicate()
+
 Collection = List | Set | Tuple
 
 Singleton = Collection & Len(1)
@@ -44,3 +46,8 @@ Singleton = Collection & Len(1)
 # Function types
 
 Function = TypePredicate(type(lambda x: x))
+
+Dict[Int, String]({
+    1: 1.0,
+    2: 3.0
+})

@@ -52,7 +52,7 @@ class CollectionLengthError(ValueTypeError):
     def __init__(self, col, expected_len, actual_len):
         super().__init__(
             col,
-            "'{}{}': expected {} elements, got {} ".format(
+            "{}{}: expected {} elements, got {} ".format(
                 type_name_ref(col),
                 col,
                 expected_len,
@@ -61,6 +61,15 @@ class CollectionLengthError(ValueTypeError):
         )
         self.expected_len = expected_len
         self.actual_len = actual_len
+
+
+class KeyValueCollectionTypingError(ValueTypeError):
+
+    def __init__(self):
+        super().__init__(
+            [],
+            "Dict[K, V]{} — Dictionary accepts either two type specifiers or none"
+        )
 
 
 class ReturnTypeError(ValuePredicateError):
