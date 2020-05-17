@@ -1,7 +1,7 @@
 ![alt text](blob/simple_type_image.png?raw=true)
 # Introduction        
 
-## One more type checker?
+## Yet another type checker?
 
 Existing solutions for type checking in python projects sometimes may seem 
 too complicated for just-in-time use.
