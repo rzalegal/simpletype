@@ -45,3 +45,4 @@ class TestCollectionBuiltins(TestCase):
                         primitive
                     )
                 ))
+
