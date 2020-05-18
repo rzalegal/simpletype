@@ -10,7 +10,7 @@ def type_name_ref(val):
 
 
 def predicate_filtered_list(arr, predicate):
-    return filter(predicate, arr)
+    return [i for i in arr if predicate(i)]
 
 
 def type_filtered_list(arr, t):

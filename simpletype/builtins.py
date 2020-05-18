@@ -47,7 +47,3 @@ Singleton = Collection & Len(1)
 
 Function = TypePredicate(type(lambda x: x))
 
-Dict[Int, String]({
-    1: 1.0,
-    2: 3.0
-})

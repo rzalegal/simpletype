@@ -121,7 +121,7 @@ class DictTypePredicate(CollectionTypePredicate):
                 self.elem_type_predicates[1](v)
 
     def __getitem__(self, *predicates):
-        if len(predicates[0]) != 2:
+        if type(predicates[0]) is not tuple or len(predicates[0]) != 2:
             raise KeyValueCollectionTypingError()
         return DictTypePredicate(
             predicates[0]

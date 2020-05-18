@@ -46,3 +46,34 @@ class TestCollectionBuiltins(TestCase):
                     )
                 ))
 
+    def test_single_elem_tuple(self):
+        for primitive, predicate in TestPrimitiveBuiltins.type_dict.items():
+            Tuple[predicate](
+                tuple(
+                    [
+                        type_filtered_list(
+                            TestPrimitiveBuiltins.values,
+                            primitive
+                        )[0]
+                    ]
+                )
+            )
+
+    def test_two_elems_tuple(self):
+        for primitive1, predicate1 in TestPrimitiveBuiltins.type_dict.items():
+            for primitive2, predicate2 in TestPrimitiveBuiltins.type_dict.items():
+                Tuple[predicate1, predicate2](
+                    tuple(
+                        [
+                            type_filtered_list(
+                                TestPrimitiveBuiltins.values,
+                                primitive1
+                            )[0],
+                            type_filtered_list(
+                                TestPrimitiveBuiltins.values,
+                                primitive2
+                            )[0]
+                        ]
+                    )
+                )
+

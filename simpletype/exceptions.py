@@ -27,7 +27,7 @@ class ElementTypeError(ValueTypeError):
     def __init__(self, value, col):
         super().__init__(
             value,
-            "col: {}{}; elem: {} <{}>".format(
+            "col: {}{}; elem: {} — {} not expected".format(
                 type_name_ref(col),
                 col,
                 value,
