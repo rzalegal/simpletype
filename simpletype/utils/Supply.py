@@ -7,7 +7,7 @@ class Supply:
     __size = 5
 
     @staticmethod
-    def at_most(size):
+    def of_size(size):
         Supply.__size = size
         return Supply
 
@@ -40,7 +40,7 @@ class Supply:
     def bool_value():
         return choice([True, False])
 
-    primitive_type_methods = {
+    __primitive_type_methods = {
 
         int: int_value.__get__(object),
         float: float_value.__get__(object),
@@ -48,29 +48,30 @@ class Supply:
         bool: bool_value.__get__(object),
         list: list,
         set: set,
-        tuple: tuple
+        tuple: tuple,
+        dict: dict
     }
 
     @staticmethod
     def value_of_type(primitive_type):
-        return Supply.primitive_type_methods[primitive_type]
+        return Supply.__primitive_type_methods[primitive_type]()
 
     @staticmethod
-    def collection(col_type, key_primitive_type, value_primitive_type=None):
+    def collection(col_type, key_primitive_type=int, value_primitive_type=None):
         if col_type == dict:
             return {
-                Supply.value_of_type(key_primitive_type)():
+                Supply.value_of_type(key_primitive_type):
                     Supply.value_of_type(
                         value_primitive_type
                         if value_primitive_type
                         else key_primitive_type
-                    )()
+                    )
                 for i in range(Supply.__size)
             }
 
         return col_type(
             [
-                Supply.value_of_type(key_primitive_type)()
+                Supply.value_of_type(key_primitive_type)
                 for i in range(Supply.__size)
             ]
         )
