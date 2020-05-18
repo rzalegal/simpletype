@@ -1,4 +1,4 @@
-from simpletype.utils import str_limit, type_name_ref
+from simpletype.utils.utils import str_limit, type_name_ref
 
 
 class ValueTypeError(TypeError):

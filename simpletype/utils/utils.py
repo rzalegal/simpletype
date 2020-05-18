@@ -4,7 +4,6 @@ def str_limit(s):
         return s[:20] + '...'
     return s
 
-
 def type_name_ref(val):
     return val.__class__.__name__
 
@@ -18,3 +17,6 @@ def type_filtered_list(arr, t):
         arr,
         lambda x: type(x) is t,
     )
+
+
+
