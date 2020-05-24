@@ -16,7 +16,7 @@ linear_collection_predicates = {
 
     List: list,
     Set: set,
-    Tuple: tuple
+
 }
 
 
@@ -42,6 +42,13 @@ class TestTypedCollectionBuiltins(TestCase):
             col_predicate(
                 Supply.of_size(10).collection(col_type)
             )
+
+    def test_typed_linears_except_tuple(self):
+        for col_predicate, col_type in {List: list, Set: set}:
+            for elem_predicate, elem_type in primitive_predicates.items():
+                col_predicate[elem_predicate](
+                    Supply.of_size(10).collection(col_type, elem_type)
+                )
 
 
 
