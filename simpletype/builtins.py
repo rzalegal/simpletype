@@ -94,8 +94,15 @@ def Takes(*predicates):
         )
     return wrapper
 
-@Takes(Int, Int)
-def sum(a, b):
-    return a + b
+
+def Returns(predicate):
+    def wrapper(func):
+        return FunctionReturning(
+            func,
+            predicate
+        )
+    return wrapper
+
+
 
 
