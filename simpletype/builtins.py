@@ -45,5 +45,57 @@ Singleton = Collection & Len(1)
 
 # Function types
 
-Function = TypePredicate(type(lambda x: x))
+
+class FunctionPredicate(TypePredicate):
+
+    def __init__(self, f):
+        super().__init__(type(lambda : None))
+        self.f = f
+
+    def __call__(self, *args):
+        super().__call__(self.f)
+        return self.f(*args)
+
+
+
+
+class FunctionTaking(FunctionPredicate):
+
+    def __init__(self, f, param_predicates):
+        super().__init__(f)
+        self.param_predicates = param_predicates
+
+    def __call__(self, *args):
+        Tuple[self.param_predicates](
+            args
+        )
+        return super().__call__(*args)
+
+
+class FunctionReturning(FunctionPredicate):
+
+    def __init__(self, f, return_predicate):
+        super().__init__(f)
+        self.return_predicate = return_predicate
+
+    def __call__(self, *args):
+        return self.return_predicate(
+            super().__call__(
+                *args
+            )
+        )
+
+
+def Takes(*predicates):
+    def wrapper(func):
+        return FunctionTaking(
+            func,
+            predicates
+        )
+    return wrapper
+
+@Takes(Int, Int)
+def sum(a, b):
+    return a + b
+
 
