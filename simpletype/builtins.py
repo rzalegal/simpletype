@@ -57,8 +57,6 @@ class FunctionPredicate(TypePredicate):
         return self.f(*args)
 
 
-
-
 class FunctionTaking(FunctionPredicate):
 
     def __init__(self, f, param_predicates):
@@ -86,12 +84,38 @@ class FunctionReturning(FunctionPredicate):
         )
 
 
+class FullyTypedFunction(TypePredicate):
+
+    def __init__(self, f_tk, f_ret):
+        super().__init__(type(lambda: 1))
+        self.f_taking = f_tk
+        self.f_returning = f_ret
+
+    def __call__(self, *args):
+        return self.f_returning.return_predicate(
+            self.f_taking(
+                *args
+            )
+        )
+        
+
 def Takes(*predicates):
     def wrapper(func):
+
+        if type(func) is FunctionReturning:
+            return FullyTypedFunction(
+                FunctionTaking(
+                    func.f,
+                    predicates
+                ),
+                func
+            )
+
         return FunctionTaking(
             func,
             predicates
         )
+
     return wrapper
 
 
@@ -102,6 +126,12 @@ def Returns(predicate):
             predicate
         )
     return wrapper
+
+
+@Takes(Int, Int, Int)
+@Returns(Float)
+def sum(a, b, c):
+    return a + b
 
 
 
