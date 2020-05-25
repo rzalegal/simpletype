@@ -48,91 +48,27 @@ Singleton = Collection & Len(1)
 
 class FunctionPredicate(TypePredicate):
 
-    def __init__(self, f):
-        super().__init__(type(lambda : None))
-        self.f = f
+    def __init__(self, ret_p=Any, *params_p):
+        super().__init__(type(
+            lambda: None
+        ))
 
-    def __call__(self, *args):
-        super().__call__(self.f)
-        return self.f(*args)
+        self.ret_p = ret_p
+        self.params_p = Tuple[params_p]
 
-
-class FunctionTaking(FunctionPredicate):
-
-    def __init__(self, f, param_predicates):
-        super().__init__(f)
-        self.param_predicates = param_predicates
-
-    def __call__(self, *args):
-        Tuple[self.param_predicates](
-            args
-        )
-        return super().__call__(*args)
-
-
-class FunctionReturning(FunctionPredicate):
-
-    def __init__(self, f, return_predicate):
-        super().__init__(f)
-        self.return_predicate = return_predicate
-
-    def __call__(self, *args):
-        return self.return_predicate(
-            super().__call__(
-                *args
+    def __call__(self, f):
+        def wrapper(*args):
+            return self.ret_p(
+                f(
+                    *self.params_p(
+                        args
+                    )
+                )
             )
-        )
+        return wrapper
 
 
-class FullyTypedFunction(TypePredicate):
+sum = FunctionPredicate(Int, Int, Int)(lambda x, y: x + y)
 
-    def __init__(self, f_tk, f_ret):
-        super().__init__(type(lambda: 1))
-        self.f_taking = f_tk
-        self.f_returning = f_ret
-
-    def __call__(self, *args):
-        return self.f_returning.return_predicate(
-            self.f_taking(
-                *args
-            )
-        )
-        
-
-def Takes(*predicates):
-    def wrapper(func):
-
-        if type(func) is FunctionReturning:
-            return FullyTypedFunction(
-                FunctionTaking(
-                    func.f,
-                    predicates
-                ),
-                func
-            )
-
-        return FunctionTaking(
-            func,
-            predicates
-        )
-
-    return wrapper
-
-
-def Returns(predicate):
-    def wrapper(func):
-        return FunctionReturning(
-            func,
-            predicate
-        )
-    return wrapper
-
-
-@Takes(Int, Int, Int)
-@Returns(Float)
-def sum(a, b, c):
-    return a + b
-
-
-
+print(sum(3,4))
 
