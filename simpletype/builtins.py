@@ -30,7 +30,6 @@ Any = Predicate(lambda x: True)
 
 void = returns(Nothing)
 
-
 # Collection types
 
 List, Set = collection_type_list(list, set)
@@ -43,7 +42,10 @@ Collection = List | Set | Tuple
 
 Singleton = Collection & Len(1)
 
+
 # Function types
+
+functional = type(lambda: 1)
 
 
 class FunctionPredicate(TypePredicate):
@@ -52,23 +54,74 @@ class FunctionPredicate(TypePredicate):
         super().__init__(type(
             lambda: None
         ))
-
+        # print(f'({",".join(str(i.t) for i in params_p)}) -> ({ret_p})')
         self.ret_p = ret_p
-        self.params_p = Tuple[params_p]
+        self.params_p = params_p
 
     def __call__(self, f):
+        super().__call__(f)
+
         def wrapper(*args):
             return self.ret_p(
                 f(
-                    *self.params_p(
+                    *Tuple[self.params_p](
                         args
                     )
                 )
             )
+
         return wrapper
 
+    def taking(self, *predicates):
+        return FunctionPredicate(
+            self.ret_p,
+            *predicates
+        )
 
-sum = FunctionPredicate(Int, Int, Int)(lambda x, y: x + y)
+    def returning(self, predicate):
+        return FunctionPredicate(
+            predicate,
+            *self.params_p
+        )
 
-print(sum(3,4))
+    def __getitem__(self, predicates):
+        return FunctionPredicate(
+            predicates[-1],
+            *predicates[:-1]
+        )
+
+
+Function = FunctionPredicate()
+
+
+def takes(*predicates):
+    def wrap(func):
+        return Function.taking(*predicates)(
+            func
+        ) if type(func) is functional else Function.taking(
+            *predicates
+        ).returning(
+            func.ret_p
+        )
+    return wrap
+
+
+def returns(predicate):
+    def wrap(func):
+        return Function.returning(
+            predicate
+        )(func)
+
+    return wrap
+
+
+@takes(Int, Int, Int)
+@returns(Int)
+def sum(a, b):
+    return a + b
+
+print(sum(1, 1))
+
+
+
 

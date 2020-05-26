@@ -128,13 +128,16 @@ class DictTypePredicate(CollectionTypePredicate):
         )
 
 
-
-
-
 class PredicateIterator:
 
     def __init__(self, predicate):
         self.predicate = predicate
+
+    def __call__(self, *args):
+        return self.predicate(*args)
+
+
+
 
 
 def primitive_type_list(*types):
