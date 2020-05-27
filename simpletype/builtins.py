@@ -42,7 +42,6 @@ Collection = List | Set | Tuple
 
 Singleton = Collection & Len(1)
 
-
 # Function types
 
 functional = type(lambda: 1)
@@ -50,78 +49,63 @@ functional = type(lambda: 1)
 
 class FunctionPredicate(TypePredicate):
 
-    def __init__(self, ret_p=Any, *params_p):
-        super().__init__(type(
-            lambda: None
-        ))
-        # print(f'({",".join(str(i.t) for i in params_p)}) -> ({ret_p})')
+    def __init__(self, f, ret_p, params_p):
+        super().__init__(functional)
+        self.f = f
         self.ret_p = ret_p
         self.params_p = params_p
 
-    def __call__(self, f):
-        super().__call__(f)
-
-        def wrapper(*args):
-            return self.ret_p(
-                f(
-                    *Tuple[self.params_p](
-                        args
-                    )
+    def __call__(self, *args):
+        return self.ret_p(
+            self.f(
+                *Tuple[self.params_p](
+                    args
                 )
             )
-
-        return wrapper
-
-    def taking(self, *predicates):
-        return FunctionPredicate(
-            self.ret_p,
-            *predicates
         )
-
-    def returning(self, predicate):
-        return FunctionPredicate(
-            predicate,
-            *self.params_p
-        )
-
-    def __getitem__(self, predicates):
-        return FunctionPredicate(
-            predicates[-1],
-            *predicates[:-1]
-        )
-
-
-Function = FunctionPredicate()
 
 
 def takes(*predicates):
-    def wrap(func):
-        return Function.taking(*predicates)(
-            func
-        ) if type(func) is functional else Function.taking(
-            *predicates
-        ).returning(
-            func.ret_p
+    def wrapper(func):
+
+        if type(func) is FunctionPredicate:
+            return FunctionPredicate(
+                func.f,
+                func.ret_p,
+                predicates
+            )
+
+        return FunctionPredicate(
+            func,
+            Any,
+            predicates
         )
-    return wrap
+
+    return wrapper
 
 
 def returns(predicate):
-    def wrap(func):
-        return Function.returning(
-            predicate
-        )(func)
+    def wrapper(func):
 
-    return wrap
+        if type(func) is FunctionPredicate:
+            return FunctionPredicate(
+                func.f,
+                predicate,
+                func.params_p,
+            )
+
+        return FunctionPredicate(
+            func,
+            predicate,
+            ()
+        )
+
+    return wrapper
 
 
-@takes(Int, Int, Int)
 @returns(Int)
+@takes(Int, Int)
 def sum(a, b):
     return a + b
-
-print(sum(1, 1))
-
-
 
 

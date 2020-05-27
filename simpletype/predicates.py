@@ -86,6 +86,10 @@ class TupleTypePredicate(CollectionTypePredicate):
         )
 
     def __getitem__(self, *elem_type_predicates):
+
+        if not elem_type_predicates:
+            return TupleTypePredicate()
+
         return TupleTypePredicate(
             elem_type_predicates[0]
             if type(elem_type_predicates[0]) is tuple
